@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Kő-Papír-Olló Játék</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-image: url("ko_papir_ollo.png");
+        background-size: cover;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      #choices {
+        display: flex;
+        justify-content: center;
+      }
+
+      button {
+        margin: 10px;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: 2px solid rgba(83, 77, 77, 0.966);
+        border-radius: 4px;
+        background-color: rgb(77, 145, 172);
+      }
+
+      #scoreboard {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 10px;
+        font-size: 20px;
+      }
+
+      #result {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 40px;
+        text-shadow: -1px -1px 0 rgb(233, 219, 219), 1px 1px 0 rgb(54, 50, 50);
+
+      }
+
+      #result.win {
+        color: rgb(0, 224, 101);
+        }
+
+        #result.lose {
+        color: rgb(255, 37, 37);
+        }
+
+        #result.draw {
+        color: rgb(31, 177, 157);
+        }
+
+    </style>
+  </head>
+  <body>
+    <h1>Kő-Papír-Olló Játék</h1>
+    <div id="choices">
+      <button id="rock">Kő</button>
+      <button id="paper">Papír</button>
+      <button id="scissors">Olló</button>
+    </div>
+    <div id="scoreboard">Nyert: 0 | Vesztett: 0 | Döntetlen: 0</div>
+    <div id="result"></div>
+    <script>
+      let wins = 0;
+      let losses = 0;
+      let ties = 0;
+
+      const choices = ['rock', 'paper', 'scissors'];
+
+      function computerPlay() {
+        return choices[Math.floor(Math.random() * choices.length)];
+      }
+
+      function playRound(playerSelection, computerSelection) {
+  if (playerSelection === computerSelection) {
+    ties++;
+    return "Döntetlen!";
+  } else if (
+    (playerSelection === "rock" && computerSelection === "scissors") ||
+    (playerSelection === "paper" && computerSelection === "rock") ||
+    (playerSelection === "scissors" && computerSelection === "paper")
+  ) {
+    wins++;
+    return "Gratulálok, nyertél!";
+  } else {
+    losses++;
+    return "Sajnos vesztettél!";
+  }
+}
+
+function game() {
+  const playerSelection = this.id;
+  const computerSelection = computerPlay();
+  const result = playRound(playerSelection, computerSelection);
+  document.getElementById('result').textContent = result;
+  document.getElementById('result').classList.remove('win', 'lose', 'draw');
+  if (result === "Gratulálok, nyertél!") {
+    document.getElementById('result').classList.add('win');
+  } else if (result === "Sajnos vesztettél!") {
+    document.getElementById('result').classList.add('lose');
+  } else {
+    document.getElementById('result').classList.add('draw');
+  }
+  document.getElementById('scoreboard').textContent = `Nyert: ${wins} | Vesztett: ${losses} | Döntetlen: ${ties}`;
+}
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => {
+  button.addEventListener('click', game);
+});
+    </script>
+  </body>
+</html>
